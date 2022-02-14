@@ -1,0 +1,94 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Stock: {{stock.info.shortName}}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center h-100">
+    <div class="col-5 h-auto mr-3">
+        <div class="row small-card my-3">
+            <div class="col-2 h-auto">
+                <img src="{{stock.info.logo_url}}" alt="" class="stock-logo m-3">
+            </div>
+            <div class="col-10 h-auto p-3">
+                <h2>{{stock.info.longName}}</h2>
+                <p><strong>Current Price: </strong>${{stock.info.currentPrice}}</p>
+                <p><strong>Open Price: </strong>${{stock.info.open}}</p>
+                <p><strong>Current Day High Price: </strong>${{stock.info.dayHigh}}</p>
+                <p><strong>Current Day Low Price: </strong>${{stock.info.dayLow}}</p>
+            </div>
+        </div>
+        <div class="row justify-content-center small-card my-3">
+            <button id="scatter-button" onclick="scatterChart()" class="btn btn-dark m-3" disabled>Scatter</button>
+            <button id="candle-button" onclick="candleChart()" class="btn btn-light m-3">Candlestick</button>
+        </div>
+        <div class="row justify-content-center small-card my-3">
+            <div id="candlestick" style="display: none;">
+                {% autoescape off %}
+                {{candlestick}}
+                {% endautoescape %}
+            </div>
+            <div id="scatter" style="display: block;">
+                {% autoescape off %}
+                {{scatter}}
+                {% endautoescape %}
+            </div>
+        </div>
+    </div>
+    <div class="col-5 h-100 ml-3">
+        <div class="row small-card my-3">
+            <div class="col-12 h-auto p-3">
+                <h2>Predict for next few days:</h2>
+                <form method="get" action="/predict/">
+                    <button type="submit" class="btn btn-dark" name="predict" value="predict">Predict</button>
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-center small-card my-3">
+            {% if prediction %}
+            <div id="prediction">
+                {% autoescape off %}
+                {{prediction}}
+                {% endautoescape %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function scatterChart() {
+        scatter = document.getElementById("scatter")
+        candle = document.getElementById("candlestick")
+        scatter_btn = document.getElementById("scatter-button")
+        candle_btn = document.getElementById("candle-button")
+
+        console.log("scatterbtn pressed")
+        scatter_btn.disabled = true
+        scatter_btn.classList.remove("btn-light")
+        scatter_btn.classList.add("btn-dark")
+        candle_btn.disabled = false
+        candle_btn.classList.remove("btn-dark")
+        candle_btn.classList.add("btn-light")
+        scatter.style.display = "block"
+        candle.style.display = "none"
+    }
+
+    function candleChart() {
+        scatter = document.getElementById("scatter")
+        candle = document.getElementById("candlestick")
+        scatter_btn = document.getElementById("scatter-button")
+        candle_btn = document.getElementById("candle-button")
+
+        console.log("candbtn pressed")
+        candle_btn.disabled = true
+        candle_btn.classList.remove("btn-light")
+        candle_btn.classList.add("btn-dark")
+        scatter_btn.disabled = false
+        scatter_btn.classList.remove("btn-dark")
+        scatter_btn.classList.add("btn-light")
+        scatter.style.display = "none"
+        candle.style.display = "block"
+    }
+</script>
+{% endblock %}
