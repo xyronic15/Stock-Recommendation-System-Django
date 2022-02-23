@@ -1,0 +1,75 @@
+body {
+  background: #3f3f3f !important;
+}
+
+h1 {
+  color: #ffffff;
+}
+
+.sidenav {
+  position: fixed;
+  width: 225px;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+  background: #606060;
+  mix-blend-mode: normal;
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  display: grid;
+  padding: 20vh 0;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  width: 180px;
+  height: 40px;
+  background: #606060;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidenav a p {
+  text-transform: uppercase;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  text-align: center;
+  margin: 0;
+  color: #ffffff;
+}
+
+.sidenav a:hover {
+  background: #00a3ff;
+  color: #f1f1f1;
+  text-decoration: none;
+}
+
+.main {
+  margin-left: 225px;
+  padding: 30px 10px;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.large-card {
+  background: #868686;
+  border-radius: 20px;
+  filter: drop-shadow(5px 10px 4px rgba(0, 0, 0, 0.25));
+}
+
+.small-card {
+  background: #ffffff;
+  filter: drop-shadow(5px 10px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 20px;
+}
+
+.stock-logo {
+  max-width: 50px;
+  max-height: 50px;
+}
