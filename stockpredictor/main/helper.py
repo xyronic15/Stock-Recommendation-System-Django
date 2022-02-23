@@ -4,7 +4,8 @@ import plotly.graph_objects as go
 from plotly.offline import plot
 import pandas as pd
 
-
+CHART_WIDTH = 750
+CHART_HEIGHT = 500
 
 # retrieve stock ticker object and history of past 5 years
 def get_ticker(ticker):
@@ -34,8 +35,8 @@ def get_candlestick(df):
         xaxis_rangeslider_visible=False,
         paper_bgcolor="rgb(0,0,0,0)", 
         autosize=True,
-        width=500,
-        height=375,
+        width=CHART_WIDTH,
+        height=CHART_HEIGHT,
         margin=dict(
             l=30,
             r=30,
@@ -62,8 +63,8 @@ def get_scatter(df):
         xaxis_rangeslider_visible=False,
         paper_bgcolor="rgb(0,0,0,0)", 
         autosize=True,
-        width=500,
-        height=375,
+        width=CHART_WIDTH,
+        height=CHART_HEIGHT,
         margin=dict(
             l=30,
             r=30,
@@ -92,8 +93,8 @@ def placeholder_plot():
         xaxis_rangeslider_visible=False,
         paper_bgcolor="rgb(0,0,0,0)", 
         autosize=True,
-        width=500,
-        height=375,
+        width=CHART_WIDTH,
+        height=CHART_HEIGHT,
         margin=dict(
             l=30,
             r=30,
