@@ -20,12 +20,14 @@ def stock(request, ticker):
 
     return render(request, 'main/stock.html', {"scatter":scatter_div, "candlestick": candle_div, "stock": stock, "prediction": prediction})
 
-def predict(request):
+def predict(request, ticker):
     
     print("Predict view called")
-    stock = request.session["stock"]
+    # stock = request.session["stock"]
+    stock = get_ticker(ticker)
     scatter_div = request.session["scatter_div"]
     candle_div = request.session["candle_div"]
+
 
     predict_div = placeholder_plot()
 
