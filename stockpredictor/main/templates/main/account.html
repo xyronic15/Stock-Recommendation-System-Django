@@ -1,0 +1,92 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <link href="{% static 'css/account.css' %}" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login/Signup</title>
+
+</head>
+
+<body class="bootstrap-dark">
+    <div class="main container d-flex justify-content-center text-center col-md-5">
+        <div class="card" style="width: 100%">
+            <ul class="nav nav-tabs nav-justified" id="tabsList" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#login" id="login-tab" role="tab">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="signup-tab" data-toggle="tab" href="#signup" role="tab">Signup</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="login" class="tab-pane fade show active" role="tabpanel">
+                    <div class="col px-4 pb-4 pt-3">
+                        <form>
+                        <div class="form-group">
+                            <label for="inputEmail">Email Address:</label>
+                            <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"
+                               placeholder="Enter Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputLoginPassword">Password:</label>
+                            <input type="password" class="form-control" id="inputLoginPassword" placeholder="Enter Password">
+                        </div>
+                        <button type="submit" class="btn btn-primary submit-btn">Login</button>
+                    </form>
+                    </div>
+                </div>
+                <div id="signup" class="tab-pane fade" role="tabpanel">
+                    <div class="col px-4 pb-4 pt-3">
+                        <form>
+                            <div class="form-group">
+                                <label for="inputFirstName">First Name:</label>
+                                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputLastName">Last Name:</label>
+                                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmailName">Email:</label>
+                                <input type="email" class="form-control" id="inputEmailName" placeholder="Email">
+                                <small id="emailHint" class="form-text text-muted">We'll never share your email without
+                                    your permission</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputUsername">Username:</label>
+                                <input type="text" class="form-control" id="inputUsername" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputSignUpPassword">Password:</label>
+                                <input type="password" class="form-control" id="inputSignUpPassword" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputConfirmPassword">Confirm Password:</label>
+                                <input type="password" class="form-control" id="inputConfirmPassword"
+                                       placeholder="Confirm Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary submit-btn">Sign Up</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<!--<small id="emailHint" class="form-text text-muted">We'll never share your email without your-->
+<!--                            permission</small>-->

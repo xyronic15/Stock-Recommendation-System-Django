@@ -30,3 +30,6 @@ def predict(request):
     predict_div = placeholder_plot()
 
     return render(request, 'main/stock.html', {"scatter":scatter_div, "candlestick": candle_div, "stock": stock, "prediction": predict_div})
+
+def account(request):
+    return render(request, 'main/account.html')

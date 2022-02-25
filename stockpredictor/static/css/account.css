@@ -1,0 +1,22 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+.main {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.tab-content {
+    text-align: left;
+}
+
+.submit-btn {
+    display: block;
+    width: 100%;
+}

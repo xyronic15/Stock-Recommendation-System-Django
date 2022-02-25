@@ -5,4 +5,6 @@ urlpatterns = [
     path("home", views.home, name="home"),
     path("stock/<ticker>", views.stock, name="stock"),
     path("predict/", views.predict, name="predict"),
+
+    path('account', views.account, name="account")
 ]
