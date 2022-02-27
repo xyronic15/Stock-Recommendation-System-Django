@@ -41,16 +41,14 @@ def predict(request):
 
 def account(request):
     if request.method == 'POST':
-        print('GOT POSTTTTTTTTTTT')
         if request.POST.get('submit') == 'signin':
             pass
         elif request.POST.get('submit') == 'signup':
-            print('SIGNING UP USERRRRRR')
             form = SignUpForm(request.POST)
+            print(form)
             if form.is_valid():
                 form.save()
-
-            return redirect('/home')
+                return redirect('/home')
 
     data = {
         'login': AuthenticationForm(),
