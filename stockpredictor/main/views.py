@@ -2,11 +2,14 @@ from django.shortcuts import render, redirect
 from .helper import get_ticker, get_past, get_candlestick, get_scatter, placeholder_plot
 
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 
 from .forms import SignUpForm
 
 
 # Create your views here.
+@login_required(login_url='/accounts')
 def home(request):
     return render(request, 'main/home.html', {})
 
@@ -40,15 +43,23 @@ def predict(request):
 
 
 def account(request):
+    user = None
+    form = None
+
     if request.method == 'POST':
         if request.POST.get('submit') == 'signin':
-            pass
+            user = authenticate(username=request.POST['username'],
+                                password=request.POST['password'])
+            if user is not None:
+                login(request, user)
         elif request.POST.get('submit') == 'signup':
             form = SignUpForm(request.POST)
             print(form)
             if form.is_valid():
                 form.save()
-                return redirect('/home')
+
+        if user is not None or form.is_valid():
+            return redirect('/home')
 
     data = {
         'login': AuthenticationForm(),
