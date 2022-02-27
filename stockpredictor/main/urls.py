@@ -6,5 +6,5 @@ urlpatterns = [
     path("stock/<ticker>", views.stock, name="stock"),
     path("predict/", views.predict, name="predict"),
 
-    path('account', views.account, name="account")
+    path('accounts/', views.account, name="accounts")
 ]

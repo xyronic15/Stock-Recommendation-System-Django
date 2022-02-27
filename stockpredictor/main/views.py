@@ -1,9 +1,16 @@
 from django.shortcuts import render
 from .helper import get_ticker, get_past, get_candlestick, get_scatter, placeholder_plot
 
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
+
+from .forms import SignUpForm
+
+
 # Create your views here.
 def home(request):
     return render(request, 'main/home.html', {})
+
 
 def stock(request, ticker):
 
@@ -20,6 +27,7 @@ def stock(request, ticker):
 
     return render(request, 'main/stock.html', {"scatter":scatter_div, "candlestick": candle_div, "stock": stock, "prediction": prediction})
 
+
 def predict(request):
     
     print("Predict view called")
@@ -31,5 +39,16 @@ def predict(request):
 
     return render(request, 'main/stock.html', {"scatter":scatter_div, "candlestick": candle_div, "stock": stock, "prediction": predict_div})
 
+
 def account(request):
-    return render(request, 'main/account.html')
+    if request.method == 'POST':
+        if request.POST.get('submit') == 'signin':
+            pass
+        elif request.POST.get('submit') == 'signup':
+            pass
+
+    data = {
+        'form1': AuthenticationForm(),
+        'form2': SignUpForm()
+    }
+    return render(request, 'main/account.html', data)
