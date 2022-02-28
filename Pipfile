@@ -9,6 +9,9 @@ yfinance = "*"
 numpy = "*"
 pandas = "*"
 plotly = "*"
+sklearn = "*"
+keras = "*"
+tensorflow = "*"
 
 [dev-packages]
 

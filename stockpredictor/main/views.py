@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from .helper import get_ticker, get_past, get_candlestick, get_scatter, placeholder_plot
+from .predictor import predictor
+
+PAST_PERIOD = "5Y"
 
 # Create your views here.
 def home(request):
@@ -9,7 +12,7 @@ def stock(request, ticker):
 
     print("Stock view called")
     stock = get_ticker(ticker)
-    df = get_past(stock)
+    df = get_past(stock, PAST_PERIOD)
     scatter_div = get_scatter(df)
     candle_div = get_candlestick(df)
     prediction = None
@@ -23,12 +26,15 @@ def stock(request, ticker):
 def predict(request, ticker):
     
     print("Predict view called")
-    # stock = request.session["stock"]
-    stock = get_ticker(ticker)
+    stock = request.session["stock"]
     scatter_div = request.session["scatter_div"]
     candle_div = request.session["candle_div"]
 
+    # Create a predictor object for the stock and retrieve the recommendations
+    predict_stock = predictor(ticker)
+    recommendation_list = predict_stock.recommendation()
+    predict_div = predict_stock.get_div(predict_stock.predict_fig)
 
-    predict_div = placeholder_plot()
+    # predict_div = placeholder_plot()
 
-    return render(request, 'main/stock.html', {"scatter":scatter_div, "candlestick": candle_div, "stock": stock, "prediction": predict_div})
+    return render(request, 'main/stock.html', {"scatter":scatter_div, "candlestick": candle_div, "stock": stock, "prediction": predict_div, "recommendation_list": recommendation_list})
