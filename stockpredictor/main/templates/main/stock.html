@@ -37,12 +37,14 @@
             </div>
         </div>
         <div class="row small-card my-3">
+            {% if prediction  == None %}
             <div class="col-12 h-auto p-3">
                 <h2>Predict for next few days:</h2>
                 <form method="get" action="/predict/{{stock.info.symbol}}">
                     <button type="submit" class="btn btn-dark" name="" value="">Predict</button>
                 </form>
             </div>
+            {% endif %}
         </div>
         <div class="row justify-content-center small-card my-3">
             {% if prediction %}
@@ -50,6 +52,18 @@
                 {% autoescape off %}
                 {{prediction}}
                 {% endautoescape %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="row justify-content-center small-card my-3">
+            {% if recommendation_list %}
+            <div class="col-10 h-auto p-3" id="recommendations">
+                <h2>Recommendations based on various strategies</h2>
+                {% for key, strat in recommendation_list.items %}
+                    {% for item in strat %}
+                    <p>{{item}}</p>
+                    {% endfor %}
+                {% endfor %}
             </div>
             {% endif %}
         </div>

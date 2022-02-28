@@ -12,8 +12,8 @@ def get_ticker(ticker):
     stock = yf.Ticker(ticker)
     return stock
 
-def get_past(stock):
-    df = stock.history(period="5y")
+def get_past(stock, period):
+    df = stock.history(period=period)
     df.reset_index(inplace=True)
     return df
 
