@@ -8,7 +8,7 @@ from keras import callbacks
 import plotly.graph_objects as go
 from plotly.offline import plot
 import pandas as pd
-from .helper import get_ticker, get_past
+from .helper import get_ticker, get_past, CHART_HEIGHT, CHART_WIDTH
 import ta
 from math import isnan
 
@@ -141,8 +141,8 @@ class predictor:
             xaxis_rangeslider_visible=False,
             paper_bgcolor="rgb(0,0,0,0)", 
             autosize=True,
-            width=500,
-            height=375,
+            width=CHART_WIDTH,
+            height=CHART_HEIGHT,
             margin=dict(
                 l=30,
                 r=30,
@@ -198,8 +198,8 @@ class predictor:
             xaxis_rangeslider_visible=False,
             paper_bgcolor="rgb(0,0,0,0)", 
             autosize=True,
-            width=500,
-            height=375,
+            width=CHART_WIDTH,
+            height=CHART_HEIGHT,
             margin=dict(
                 l=30,
                 r=30,

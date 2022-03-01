@@ -6,7 +6,7 @@
 <div class="row justify-content-center h-100">
     <div class="col-8 h-auto">
         <div class="row small-card my-3">
-            <div class="col-2 h-auto">
+            <div class="col-2 h-auto p-3">
                 <img src="{{stock.info.logo_url}}" alt="" class="stock-logo m-3">
             </div>
             <div class="col-4 h-auto p-3">
@@ -20,11 +20,11 @@
                 <p><strong>Current Day Low Price: </strong>${{stock.info.dayLow}}</p>
             </div>
         </div>
-        <div class="row justify-content-center small-card my-3">
+        <div class="row justify-content-center small-card py-3 my-3">
             <button id="scatter-button" onclick="scatterChart()" class="btn btn-dark m-3" disabled>Scatter</button>
             <button id="candle-button" onclick="candleChart()" class="btn btn-light m-3">Candlestick</button>
         </div>
-        <div class="row justify-content-center small-card my-3">
+        <div class="row justify-content-center small-card py-3 my-3">
             <div id="candlestick" style="display: none;">
                 {% autoescape off %}
                 {{candlestick}}
@@ -36,87 +36,55 @@
                 {% endautoescape %}
             </div>
         </div>
-        <div class="row small-card my-3">
-            {% if prediction  == None %}
+        {% if prediction  == None %}
+        <div class="row small-card px-5 py-3 my-3">
             <div class="col-12 h-auto p-3">
-                <h2>Predict for next few days:</h2>
+                <h2>Get Recommendations:</h2>
                 <form method="get" action="/predict/{{stock.info.symbol}}">
                     <button type="submit" class="btn btn-dark" name="" value="">Predict</button>
                 </form>
             </div>
-            {% endif %}
         </div>
-        <div class="row justify-content-center small-card my-3">
-            {% if prediction %}
+        {% endif %}
+        {% if prediction %}
+        <div class="row justify-content-center small-card py-3 my-3">
             <div id="prediction">
                 {% autoescape off %}
                 {{prediction}}
                 {% endautoescape %}
             </div>
-            {% endif %}
         </div>
-        <div class="row justify-content-center small-card my-3">
-            {% if recommendation_list %}
-            <div class="col-10 h-auto p-3" id="recommendations">
+        {% endif %}
+        {% if recommendation_list %}
+        <div class="row justify-content-center small-card py-3 my-3">
                 <h2>Recommendations based on various strategies</h2>
-                {% for key, strat in recommendation_list.items %}
-                    {% for item in strat %}
-                    <p>{{item}}</p>
-                    {% endfor %}
-                {% endfor %}
-            </div>
-            {% endif %}
+                <div class="col-5 h-auto p-3">
+                    <div class="row p-3">
+                        {% for item in recommendation_list.MACD %}
+                        <p>{{item}}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="row p-3">
+                        {% for item in recommendation_list.Candle %}
+                        <p>{{item}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-5 h-auto p-3">
+                    <div class="row p-3">
+                        {% for item in recommendation_list.RSI %}
+                        <p>{{item}}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="row p-3">
+                        {% for item in recommendation_list.Predict %}
+                        <p>{{item}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
         </div>
+        {% endif %}
     </div>
-    <!-- <div class="col-5 h-auto mr-3"> -->
-        <!-- <div class="row small-card my-3">
-            <div class="col-2 h-auto">
-                <img src="{{stock.info.logo_url}}" alt="" class="stock-logo m-3">
-            </div>
-            <div class="col-10 h-auto p-3">
-                <h2>{{stock.info.longName}}</h2>
-                <p><strong>Current Price: </strong>${{stock.info.currentPrice}}</p>
-                <p><strong>Open Price: </strong>${{stock.info.open}}</p>
-                <p><strong>Current Day High Price: </strong>${{stock.info.dayHigh}}</p>
-                <p><strong>Current Day Low Price: </strong>${{stock.info.dayLow}}</p>
-            </div>
-        </div>
-        <div class="row justify-content-center small-card my-3">
-            <button id="scatter-button" onclick="scatterChart()" class="btn btn-dark m-3" disabled>Scatter</button>
-            <button id="candle-button" onclick="candleChart()" class="btn btn-light m-3">Candlestick</button>
-        </div>
-        <div class="row justify-content-center small-card my-3">
-            <div id="candlestick" style="display: none;">
-                {% autoescape off %}
-                {{candlestick}}
-                {% endautoescape %}
-            </div>
-            <div id="scatter" style="display: block;">
-                {% autoescape off %}
-                {{scatter}}
-                {% endautoescape %}
-            </div>
-        </div> -->
-    <!-- </div> -->
-    <!-- <div class="col-5 h-100 ml-3">
-        <div class="row small-card my-3">
-            <div class="col-12 h-auto p-3">
-                <h2>Predict for next few days:</h2>
-                <form method="get" action="/predict/{{stock.info.symbol}}">
-                    <button type="submit" class="btn btn-dark" name="" value="">Predict</button>
-                </form>
-            </div>
-        </div>
-        <div class="row justify-content-center small-card my-3">
-            {% if prediction %}
-            <div id="prediction">
-                {% autoescape off %}
-                {{prediction}}
-                {% endautoescape %}
-            </div>
-            {% endif %}
-        </div>
-    </div> -->
 </div>
 
 <script>
