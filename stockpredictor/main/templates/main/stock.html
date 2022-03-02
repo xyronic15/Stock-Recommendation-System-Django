@@ -19,6 +19,28 @@
                 <p><strong>Current Day High Price: </strong>${{stock.info.dayHigh}}</p>
                 <p><strong>Current Day Low Price: </strong>${{stock.info.dayLow}}</p>
             </div>
+            <div class="col-2 justify-content-center h-auto p-3">
+                <h2><br></h2>
+                {% if favourite %}
+                <form method="POST" id="fav-form" style="display: none">
+                    {% csrf_token %}
+                    <button type="submit" value="{{stock.info.symbol}}" id="fav_btn" name="favourite" class="btn btn-info">Favourite</button>
+                </form>
+                <form method="POST" id="unfav-form" style="display: block">
+                    {% csrf_token %}
+                    <button type="submit" value="{{stock.info.symbol}}" id="unfav_btn" name="unfavourite" class="btn btn-danger">Remove</button>
+                </form>
+                {% else %}
+                <form method="POST" id="fav-form" style="display: block">
+                    {% csrf_token %}
+                    <button type="submit" value="{{stock.info.symbol}}" id="fav_btn" name="favourite" class="btn btn-info">Favourite</button>
+                </form>
+                <form method="POST" id="unfav-form" style="display: none">
+                    {% csrf_token %}
+                    <button type="submit" value="{{stock.info.symbol}}" id="unfav_btn" name="unfavourite" class="btn btn-danger">Remove</button>
+                </form>
+                {% endif %}
+            </div>
         </div>
         <div class="row justify-content-center small-card py-3 my-3">
             <button id="scatter-button" onclick="scatterChart()" class="btn btn-dark m-3" disabled>Scatter</button>
@@ -121,6 +143,47 @@
         scatter_btn.classList.add("btn-light")
         scatter.style.display = "none"
         candle.style.display = "block"
+    }
+</script>
+<script>
+    $('#fav-form').on('submit', function(event){
+        event.preventDefault();
+        console.log("adding favourite")  // sanity check
+        add_favourite();
+    });
+
+    $('#unfav-form').on('submit', function(event){
+        event.preventDefault();
+        console.log("removing favourite")  // sanity check
+        remove_favourite();
+    });
+
+    function add_favourite(){
+        console.log('now adding favourite')
+
+        $.ajax({
+            url:'favourite/',
+            type: "POST",
+            data: { "ticker":  $('fav_btn').val() },
+            success: function() {
+                $('#unfav-form').css("display", "block")
+                $('#fav-form').css("display", "none")
+            }
+        })
+    }
+
+    function remove_favourite(){
+        console.log('now removing favourite')
+
+        $.ajax({
+            url:'unfavourite/',
+            type: "POST",
+            data: { "ticker":  $('unfav_btn').val() },
+            success: function() {
+                $('#unfav-form').css("display", "none")
+                $('#fav-form').css("display", "block")
+            }
+        })
     }
 </script>
 {% endblock %}

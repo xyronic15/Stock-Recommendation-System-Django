@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Favourite(models.Model):
-    userID = models.ForeignKey(User, on_delete=models.CASCADE)
+    userID = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favourite")
     ticker  = models.CharField(max_length=200)
 
     def __str__(self):

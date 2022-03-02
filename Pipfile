@@ -12,6 +12,8 @@ plotly = "*"
 sklearn = "*"
 keras = "*"
 tensorflow = "*"
+django-crispy-forms = "*"
+django-jquery = "*"
 
 [dev-packages]
 

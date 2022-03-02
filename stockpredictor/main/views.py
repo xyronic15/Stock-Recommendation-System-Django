@@ -1,6 +1,10 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from .models import Favourite
 from .helper import get_ticker, get_past, get_candlestick, get_scatter, placeholder_plot
 from .predictor import predictor
+from django.contrib.auth.models import User
+from django.db.models import Q
 
 PAST_PERIOD = "5Y"
 
@@ -16,27 +20,48 @@ from .forms import SignUpForm
 def home(request):
     return render(request, 'main/home.html', {})
 
-
+@login_required(login_url='/accounts')
 def stock(request, ticker):
     print("Stock view called")
+
     stock = get_ticker(ticker)
+    if stock.info['regularMarketPrice'] == None:
+        msg = "No such ticker as " + ticker
+        return render(request, 'mainmain/home.html', {"msg": msg})
+
+    # check if favourite exists for this user
+    curr_fav = False
+    favourite = None
+    try:
+        favourite = Favourite.objects.filter(Q(ticker__iexact=ticker) & Q(userID=request.user))
+    except:
+        favourite = None
+    
+    if favourite != None:
+        curr_fav = True
+    
+    print(favourite)
+    print(request.user)
+
     df = get_past(stock, PAST_PERIOD)
     scatter_div = get_scatter(df)
     candle_div = get_candlestick(df)
     prediction = None
 
     request.session["stock"] = stock
+    request.session["curr_fav"] = curr_fav
     request.session["scatter_div"] = scatter_div
     request.session["candle_div"] = candle_div
 
     return render(request, 'main/stock.html',
-                  {"scatter": scatter_div, "candlestick": candle_div, "stock": stock, "prediction": prediction})
+                  {"scatter": scatter_div, "candlestick": candle_div, "stock": stock, "favourite": curr_fav, "prediction": prediction})
 
-
+@login_required(login_url='/accounts')
 def predict(request, ticker):
     
     print("Predict view called")
     stock = request.session["stock"]
+    curr_fav = request.session["curr_fav"]
     scatter_div = request.session["scatter_div"]
     candle_div = request.session["candle_div"]
 
@@ -47,7 +72,32 @@ def predict(request, ticker):
 
     # predict_div = placeholder_plot()
 
-    return render(request, 'main/stock.html', {"scatter":scatter_div, "candlestick": candle_div, "stock": stock, "prediction": predict_div, "recommendation_list": recommendation_list})
+    return render(request, 'main/stock.html', {"scatter":scatter_div, "candlestick": candle_div, "stock": stock, "favourite": curr_fav, "prediction": predict_div, "recommendation_list": recommendation_list})
+
+def add_favourite(request):
+    if request.method == "POST":
+        ticker = request.POST.get('ticker')
+
+        favourite = Favourite(ticker=ticker)
+        favourite.save()
+        request.user.favourite.add(favourite)
+
+        print("Added " + ticker + " to favourites")
+
+        return HttpResponse("Added " + ticker + " to favourites")
+    else:
+        return HttpResponse("Could not add ticker to favourites")
+
+def remove_favourite(request):
+    if request.method == "POST":
+        ticker = request.POST.get('ticker')
+
+        f = Favourite.objects.get(Q(ticker__iexact=ticker) & Q(userID=request.user))
+        f.delete()
+
+        print("Removed " + ticker + " from favourites")
+
+        return HttpResponse("Removed " + ticker + " from favourites")
 
 def account(request):
     user = None
