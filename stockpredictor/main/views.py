@@ -37,10 +37,12 @@ def stock(request, ticker):
     except:
         favourite = None
     
-    if favourite != None:
+    if favourite:
         curr_fav = True
     
     print(favourite)
+    # curr_fav = Favourite.objects.exists(Q(ticker__iexact=ticker) & Q(userID=request.user))
+    # print(curr_fav)
     print(request.user)
 
     df = get_past(stock, PAST_PERIOD)
@@ -78,9 +80,9 @@ def add_favourite(request):
     if request.method == "POST":
         ticker = request.POST.get('ticker')
 
-        favourite = Favourite(ticker=ticker)
+        favourite = Favourite(userID=request.user, ticker=ticker)
         favourite.save()
-        request.user.favourite.add(favourite)
+        # request.user.favourite.add(favourite)
 
         print("Added " + ticker + " to favourites")
 
@@ -92,12 +94,20 @@ def remove_favourite(request):
     if request.method == "POST":
         ticker = request.POST.get('ticker')
 
-        f = Favourite.objects.get(Q(ticker__iexact=ticker) & Q(userID=request.user))
-        f.delete()
+        try:
+            print("Ticker to be removed + Current user:")
+            print(ticker)
+            print(request.user)
 
-        print("Removed " + ticker + " from favourites")
+            f = Favourite.objects.get(Q(ticker__iexact=ticker) & Q(userID=request.user))
+            f.delete()
 
-        return HttpResponse("Removed " + ticker + " from favourites")
+            print("Removed " + ticker + " from favourites")
+
+            return HttpResponse("Removed " + ticker + " from favourites")
+        except:
+            return HttpResponse("Failed to remove from favourites")
+
 
 def account(request):
     user = None

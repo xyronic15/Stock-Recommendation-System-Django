@@ -158,16 +158,22 @@
         remove_favourite();
     });
 
+    var curr_ticker = "{{stock.info.symbol}}"
+    console.log(curr_ticker)
+
     function add_favourite(){
         console.log('now adding favourite')
 
         $.ajax({
-            url:'favourite/',
+            url:"{% url 'favourite' %}",
             type: "POST",
-            data: { "ticker":  $('fav_btn').val() },
-            success: function() {
+            data: { ticker:  curr_ticker },
+            headers: {'X-CSRFToken': csrftoken},
+            dataType: 'text',
+            success: function(result) {
                 $('#unfav-form').css("display", "block")
                 $('#fav-form').css("display", "none")
+                console.log(result)
             }
         })
     }
@@ -176,12 +182,15 @@
         console.log('now removing favourite')
 
         $.ajax({
-            url:'unfavourite/',
+            url:"{% url 'unfavourite' %}",
             type: "POST",
-            data: { "ticker":  $('unfav_btn').val() },
-            success: function() {
+            data: { ticker:  curr_ticker },
+            headers: {'X-CSRFToken': csrftoken},
+            dataType: 'text',
+            success: function(result) {
                 $('#unfav-form').css("display", "none")
                 $('#fav-form').css("display", "block")
+                console.log(result)
             }
         })
     }
