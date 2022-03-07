@@ -125,7 +125,7 @@ def account(request):
             if form.is_valid():
                 form.save()
 
-        if user is not None or form.is_valid():
+        if user is not None or (form and form.is_valid()):
             return redirect('/home')
 
     data = {
