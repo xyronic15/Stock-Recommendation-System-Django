@@ -18,7 +18,16 @@ from .forms import SignUpForm
 # Create your views here.
 @login_required(login_url='/accounts')
 def home(request):
-    return render(request, 'main/home.html', {})
+
+    # get user's name
+    fname, lname = request.user.first_name, request.user.last_name
+
+    # retrieve all the favourites associated with the user
+    favourites = request.user.favourite_set.all()
+
+    msg = None
+
+    return render(request, 'main/home.html', {"fname":fname, "lname": lname, "favourites": favourites, "msg": msg})
 
 @login_required(login_url='/accounts')
 def stock(request, ticker):
@@ -26,8 +35,14 @@ def stock(request, ticker):
 
     stock = get_ticker(ticker)
     if stock.info['regularMarketPrice'] == None:
+        # get user's name
+        fname, lname = request.user.first_name, request.user.last_name
+
+        # retrieve all the favourites associated with the user
+        favourites = request.user.favourite_set.all()
+        
         msg = "No such ticker as " + ticker
-        return render(request, 'mainmain/home.html', {"msg": msg})
+        return render(request, 'main/home.html', {"msg": msg})
 
     # check if favourite exists for this user
     curr_fav = False
