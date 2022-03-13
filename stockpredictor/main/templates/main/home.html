@@ -4,4 +4,16 @@
 
 {% block content %}
     <h1>Home</h1>
+    {% if msg %}
+    <p>{{msg}}</p>
+    {% endif %}
+
+    <div class="row clearfix justify-content-center h-100">
+        <!-- Single card template -->
+        <!-- {% for fav in favourites %}
+        <div class="col-4 small-card my-3">
+            {{fav.ticker}}
+        </div>
+        {% endfor %} -->
+    </div>
 {% endblock %}

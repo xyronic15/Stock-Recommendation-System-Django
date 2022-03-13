@@ -23,7 +23,7 @@ def home(request):
     fname, lname = request.user.first_name, request.user.last_name
 
     # retrieve all the favourites associated with the user
-    favourites = request.user.favourite_set.all()
+    favourites = Favourite.objects.filter(userID=request.user)
 
     msg = None
 
@@ -39,10 +39,10 @@ def stock(request, ticker):
         fname, lname = request.user.first_name, request.user.last_name
 
         # retrieve all the favourites associated with the user
-        favourites = request.user.favourite_set.all()
+        favourites = Favourite.objects.filter(userID=request.user)
         
         msg = "No such ticker as " + ticker
-        return render(request, 'main/home.html', {"msg": msg})
+        return render(request, 'main/home.html', {"fname": fname, "lname": lname, "favourites": favourites, "msg": msg})
 
     # check if favourite exists for this user
     curr_fav = False
