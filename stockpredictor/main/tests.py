@@ -22,9 +22,9 @@ class LoginTest(TestCase):
         new_user.save()
 
         c = Client()
-        response = c.post('/account/', username=user['username'], password=user['password'], submit=user['submit'])
+        response = c.post('/accounts/', username=user['username'], password=user['password'], submit=user['submit'])
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     # testing login of user that does not exist
     def test_user_login_does_not_exist(self):
@@ -34,13 +34,13 @@ class LoginTest(TestCase):
             'submit': 'signin'
         }
         c = Client()
-        response = c.post('/account/',
+        response = c.post('/accounts/',
                           username=user['username'],
                           password=user['password'],
                           submit=user['submit']
                           )
 
-        self.assertTrue(response.status_code, 400)
+        self.assertEqual(response.status_code, 400)
 
 
 class SignupTest(TestCase):
@@ -55,7 +55,7 @@ class SignupTest(TestCase):
         }
 
         c = Client()
-        response = c.post('/account/',
+        response = c.post('/accounts/',
                           first_name=user['first_name'],
                           last_name=user['last_name'],
                           username=user['username'],
@@ -64,7 +64,7 @@ class SignupTest(TestCase):
                           submit=user['submit']
                           )
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     # testing if user enters non-matching passwords
     def test_not_same_pass(self):
@@ -77,7 +77,7 @@ class SignupTest(TestCase):
         }
 
         c = Client()
-        response = c.post('/account/',
+        response = c.post('/accounts/',
                           first_name=user['first_name'],
                           last_name=user['last_name'],
                           username=user['username'],
@@ -86,4 +86,34 @@ class SignupTest(TestCase):
                           submit=user['submit']
                           )
 
-        self.assertTrue(response.status_code, 400)
+        self.assertEqual(response.status_code, 400)
+
+class StockTest(TestCase):
+
+    user = {
+            'username': 'TestUser123',
+            'password': '*G3Zd54(.ys8(nE_',
+            'submit': 'signin'
+        }
+
+    # setup the test by making a new user
+    def setUp(self):
+        new_user = User.objects.create(username=self.user['username'])
+        new_user.set_password(self.user['password'])
+        new_user.save()
+        pass
+
+    def test_valid_stock_passed(self):
+
+        c = Client()
+        print(self.user['username'])
+        c.login(username=self.user['username'], password=self.user['password'])
+        response = c.post('/stock/aapl')
+        print(response.status_code)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/stock.html')
+
+
+        
+
