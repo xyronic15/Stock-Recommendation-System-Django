@@ -127,7 +127,7 @@ def remove_favourite(request):
 def account(request):
     user = None
     form = None
-
+    print(request.POST)
     if request.method == 'POST':
         if request.POST.get('submit') == 'signin':
             user = authenticate(username=request.POST['username'],
@@ -136,7 +136,6 @@ def account(request):
                 login(request, user)
         elif request.POST.get('submit') == 'signup':
             form = SignUpForm(request.POST)
-            print(form)
             if form.is_valid():
                 form.save()
 
