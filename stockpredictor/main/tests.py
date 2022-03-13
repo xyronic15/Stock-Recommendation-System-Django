@@ -2,6 +2,12 @@ from django.test import TestCase
 from django.test import Client
 from django.contrib.auth.models import User
 
+
+from django.test import TestCase
+from django.test import Client
+from django.contrib.auth.models import User
+
+
 class LoginTest(TestCase):
     # testing if page displays when user visits same address
     def test_view_page(self):
@@ -14,7 +20,6 @@ class LoginTest(TestCase):
         user = {
             'username': 'TestUser123',
             'password': '*G3Zd54(.ys8(nE_',
-            'submit': 'signin'
         }
 
         new_user = User.objects.create(username=user['username'])
@@ -22,25 +27,37 @@ class LoginTest(TestCase):
         new_user.save()
 
         c = Client()
-        response = c.post('/accounts/', username=user['username'], password=user['password'], submit=user['submit'])
+        response = c.login(username=user['username'], password=user['password'])
 
-        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response)
 
     # testing login of user that does not exist
     def test_user_login_does_not_exist(self):
         user = {
-            'username': 'RandomUser',
-            'password': 'RandomPass',
-            'submit': 'signin'
+            'first_name': 'TestFirstName',
+            'last_name': 'TestLastName',
+            'username': 'TestUser123',
+            'password': '*G3Zd54(.ys8(nE_',
+            'submit': 'signup'
         }
         c = Client()
         response = c.post('/accounts/',
+                          first_name=user['first_name'],
+                          last_name=user['last_name'],
                           username=user['username'],
-                          password=user['password'],
+                          password1=user['password'],
+                          password2=user['password'],
                           submit=user['submit']
                           )
 
-        self.assertEqual(response.status_code, 400)
+        response = c.post('/accounts/',
+                          "TestUsername",
+                          "TestPassword123",
+                          submit='signin'
+                          )
+
+        # self.assertEqual(response.status_code, 400)
+        self.assertTemplateUsed(response, 'main/account.html')
 
 
 class SignupTest(TestCase):
@@ -86,7 +103,9 @@ class SignupTest(TestCase):
                           submit=user['submit']
                           )
 
-        self.assertEqual(response.status_code, 400)
+        # self.assertEqual(response.status_code, 400)
+        self.assertTemplateUsed(response, 'main/account.html')
+
 
 class StockTest(TestCase):
 
