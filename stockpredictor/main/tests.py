@@ -109,7 +109,7 @@ class StockTest(TestCase):
         self.client.login(username=self.user['username'], password=self.user['password'])
 
     def test_valid_stock_passed(self):
-        # c = Client()
+
         response = self.client.post('/stock/aapl')
         # print(response.status_code)
 
@@ -193,4 +193,16 @@ class PredictTest(TestCase):
         self.client.login(username=self.user['username'], password=self.user['password'])
     
     def test_prediction(self):
-        pass
+
+        self.client.post('/stock/aapl')
+        response = self.client.post("/predict/aapl")
+        # print(response.status_code)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/stock.html')
+        self.assertIsNotNone(response.context['scatter'])
+        self.assertIsNotNone(response.context['candlestick'])
+        self.assertIsNotNone(response.context['stock'])
+        self.assertIsNotNone(response.context['favourite'])
+        self.assertIsNotNone(response.context['prediction'])
+        self.assertIsNotNone(response.context["recommendation_list"])
