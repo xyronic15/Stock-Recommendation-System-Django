@@ -55,10 +55,10 @@ def stock(request, ticker):
     if favourite:
         curr_fav = True
     
-    print(favourite)
+    # print(favourite)
     # curr_fav = Favourite.objects.exists(Q(ticker__iexact=ticker) & Q(userID=request.user))
     # print(curr_fav)
-    print(request.user)
+    # print(request.user)
 
     df = get_past(stock, PAST_PERIOD)
     scatter_div = get_scatter(df)
