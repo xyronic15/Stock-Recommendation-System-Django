@@ -22,6 +22,7 @@ class LoginTest(TestCase):
         user = {
             'username': 'TestUser123',
             'password': '*G3Zd54(.ys8(nE_',
+            'submit': 'signin'
         }
 
         new_user = User.objects.create(username=user['username'])
@@ -29,9 +30,9 @@ class LoginTest(TestCase):
         new_user.save()
 
         c = Client()
-        response = c.login(username=user['username'], password=user['password'])
+        response = c.post('/accounts/', username=user['username'], password=user['password'], submit=user['submit'])
 
-        self.assertTrue(response)
+        self.assertEqual(response.status_code, 200)
 
     # testing login of user that does not exist
     def test_user_login_does_not_exist(self):
