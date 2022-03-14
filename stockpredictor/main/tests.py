@@ -262,3 +262,32 @@ class HomeTest(TestCase):
         self.assertEqual(response.context['fname'], self.user['first_name'])
         self.assertEqual(response.context['lname'], self.user['last_name'])
         self.assertEqual(list(response.context['favourites']), list(favourites))
+
+class LogoutTest(TestCase):
+
+    # setup the test by making a new user
+    def setUp(self):
+        self.user = {
+            'username': 'TestUser123',
+            'password': '*G3Zd54(.ys8(nE_',
+            'first_name': "tester",
+            'last_name': "123",
+            'submit': 'signin'
+        }
+
+        new_user = User.objects.create(username=self.user['username'], first_name=self.user['first_name'], last_name=self.user['last_name'])
+        new_user.set_password(self.user['password'])
+        new_user.save()
+
+        self.client.login(username=self.user['username'], password=self.user['password'])
+    
+    def test_logout_url(self):
+
+        # print("logout value: " + str(self.client.logout()))
+
+        response = self.client.post("/logout/")
+
+        
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/accounts/")
