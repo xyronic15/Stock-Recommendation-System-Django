@@ -226,3 +226,39 @@ class PredictTest(TestCase):
         self.assertIsNotNone(response.context['favourite'])
         self.assertIsNotNone(response.context['prediction'])
         self.assertIsNotNone(response.context["recommendation_list"])
+
+class HomeTest(TestCase):
+
+    # setup the test by making a new user and setting the favourites
+    def setUp(self):
+        self.user = {
+            'username': 'TestUser123',
+            'password': '*G3Zd54(.ys8(nE_',
+            'first_name': "tester",
+            'last_name': "123",
+            'submit': 'signin'
+        }
+
+        new_user = User.objects.create(username=self.user['username'], first_name=self.user['first_name'], last_name=self.user['last_name'])
+        new_user.set_password(self.user['password'])
+        new_user.save()
+
+        self.client.login(username=self.user['username'], password=self.user['password'])
+
+        self.user_favourites = ['aapl', 'tsla', 'msft']
+
+        for ticker in self.user_favourites:
+            self.client.post("/favourite/", {"ticker": ticker})
+
+    def test_retrieval(self):
+
+        response = self.client.get("/home/")
+
+        favourites = Favourite.objects.filter(userID=response.context['user'])
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main/home.html')
+        self.assertIsNone(response.context['msg'])
+        self.assertEqual(response.context['fname'], self.user['first_name'])
+        self.assertEqual(response.context['lname'], self.user['last_name'])
+        self.assertEqual(list(response.context['favourites']), list(favourites))
