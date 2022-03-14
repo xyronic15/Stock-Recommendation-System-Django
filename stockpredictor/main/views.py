@@ -42,7 +42,7 @@ def stock(request, ticker):
         favourites = Favourite.objects.filter(userID=request.user)
         
         msg = "No such ticker as " + ticker
-        return render(request, 'main/home.html', {"fname": fname, "lname": lname, "favourites": favourites, "msg": msg})
+        return render(request, 'main/home.html', {"fname": fname, "lname": lname, "favourites": favourites, "msg": msg}, status=301)
 
     # check if favourite exists for this user
     curr_fav = False
@@ -55,10 +55,10 @@ def stock(request, ticker):
     if favourite:
         curr_fav = True
     
-    print(favourite)
+    # print(favourite)
     # curr_fav = Favourite.objects.exists(Q(ticker__iexact=ticker) & Q(userID=request.user))
     # print(curr_fav)
-    print(request.user)
+    # print(request.user)
 
     df = get_past(stock, PAST_PERIOD)
     scatter_div = get_scatter(df)
@@ -96,6 +96,7 @@ def add_favourite(request):
         ticker = request.POST.get('ticker')
 
         favourite = Favourite(userID=request.user, ticker=ticker)
+        # print(ticker)
         favourite.save()
         # request.user.favourite.add(favourite)
 
