@@ -3,22 +3,44 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <h1>Home</h1>
 
-    <form action="/stock" method="GET">   
-        <input name="ticker" type="text" placeholder="Stock Ticker (e.g. AAPL)" aria-label="Search">
-        <button type="submit">Search</button>
-   </form>
-    {% if msg %}
-    <p>{{msg}}</p>
-    {% endif %}
-
-    <div class="row clearfix justify-content-center h-100">
-        <!-- Single card template -->
-        <!-- {% for fav in favourites %}
-        <div class="col-4 small-card my-3">
-            {{fav.ticker}}
-        </div>
-        {% endfor %} -->
+    <div class="row m-3">
+        <h1>Home</h1>
     </div>
+    <br>
+    <div class="row m-3">
+        <h1>Welcome {{fname}} {{lname}}</h1>
+    </div>
+    <div class="row m-3">
+        <form action="/stock" method="GET">   
+            <input name="ticker" type="text" placeholder="Stock Ticker (e.g. AAPL)" aria-label="Search">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="row m-3">
+        {% if msg %}
+        <p>{{msg}}</p>
+        {% endif %}
+    </div>
+
+    <div class="row h-25">
+        
+        <!-- Single card template -->
+        {% for fav in favourites %}
+        <form method="get" action="/stock" class="col-4 h-100 py-3">
+            <button type="submit" name="ticker" value="{{fav.ticker}}" class="small-card h-100 w-100">
+                <div class="row">
+                    <div class="col-2 h-100">
+                        <img src="{{fav.logo_url}}" alt="" class="stock-logo m-3">
+                    </div>
+                    <div class="col-8 h-100">
+                        <h2>{{fav.longName}}</h2>
+                        <p><strong>Ticker: {{fav.ticker}}</strong></p>
+                    </div>
+                </div>
+            </button>
+        </form>        
+        {% endfor %}
+    </div>
+
 {% endblock %}
