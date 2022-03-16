@@ -158,7 +158,9 @@ class StockTest(TestCase):
     def test_add_favourite(self):
 
         ticker = "aapl"
-        response = self.client.post("/favourite/", {"ticker": ticker})
+        longName = "Apple Inc."
+        logo_url = "https://logo.clearbit.com/apple.com"
+        response = self.client.post("/favourite/", {"ticker": ticker, "longName": longName, "logo_url": logo_url})
         # print(response.content.decode("utf-8") == "Added " + ticker + " to favourites")
         # print(response.content == "Added " + ticker + " to favourites")
 
@@ -171,7 +173,9 @@ class StockTest(TestCase):
     def test_remove_valid_favourite(self):
     
         ticker = "aapl"
-        self.client.post("/favourite/", {"ticker": ticker})
+        longName = "Apple Inc."
+        logo_url = "https://logo.clearbit.com/apple.com"
+        self.client.post("/favourite/", {"ticker": ticker, "longName": longName, "logo_url": logo_url})
         response = self.client.post("/unfavourite/", {"ticker": ticker})
         # print(response.content.decode("utf-8") == "Added " + ticker + " to favourites")
         # print(response.content == "Added " + ticker + " to favourites")
@@ -185,7 +189,9 @@ class StockTest(TestCase):
     def test_remove_invalid_favourite(self):
 
         ticker = "aapl"
-        self.client.post("/favourite/", {"ticker": ticker})
+        longName = "Apple Inc."
+        logo_url = "https://logo.clearbit.com/apple.com"
+        self.client.post("/favourite/", {"ticker": ticker, "longName": longName, "logo_url": logo_url})
         response = self.client.post("/unfavourite/", {"ticker": "1234"})
 
         favourites = Favourite.objects.filter(userID=self.new_user)
@@ -245,10 +251,10 @@ class HomeTest(TestCase):
 
         self.client.login(username=self.user['username'], password=self.user['password'])
 
-        self.user_favourites = ['aapl', 'tsla', 'msft']
+        self.user_tickers = ['aapl', 'tsla', 'msft']
 
-        for ticker in self.user_favourites:
-            self.client.post("/favourite/", {"ticker": ticker})
+        for ticker in self.user_tickers:
+            self.client.post("/favourite/", {"ticker": ticker, "longName": "longName", "logo_url": "logo_url"})
 
     def test_retrieval(self):
 

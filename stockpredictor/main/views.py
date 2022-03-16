@@ -99,8 +99,10 @@ def predict(request, ticker):
 def add_favourite(request):
     if request.method == "POST":
         ticker = request.POST.get('ticker')
+        longName = request.POST.get('longName')
+        logo_url = request.POST.get('logo_url')
 
-        favourite = Favourite(userID=request.user, ticker=ticker)
+        favourite = Favourite(userID=request.user, ticker=ticker, longName=longName, logo_url=logo_url)
         # print(ticker)
         favourite.save()
         # request.user.favourite.add(favourite)

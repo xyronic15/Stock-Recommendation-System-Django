@@ -159,6 +159,8 @@
     });
 
     var curr_ticker = "{{stock.info.symbol}}"
+    var curr_longName = "{{stock.info.longName}}"
+    var curr_logo_url = "{{stock.info.logo_url}}"
     console.log(curr_ticker)
 
     function add_favourite(){
@@ -167,7 +169,7 @@
         $.ajax({
             url:"{% url 'favourite' %}",
             type: "POST",
-            data: { ticker:  curr_ticker },
+            data: { ticker:  curr_ticker, longName: curr_longName, logo_url: curr_logo_url },
             headers: {'X-CSRFToken': csrftoken},
             dataType: 'text',
             success: function(result) {
