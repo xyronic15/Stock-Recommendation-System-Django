@@ -4,6 +4,11 @@
 
 {% block content %}
     <h1>Home</h1>
+
+    <form action="/stock" method="GET">   
+        <input name="ticker" type="text" placeholder="Stock Ticker (e.g. AAPL)" aria-label="Search">
+        <button type="submit">Search</button>
+   </form>
     {% if msg %}
     <p>{{msg}}</p>
     {% endif %}

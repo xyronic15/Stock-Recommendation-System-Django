@@ -130,7 +130,7 @@ class StockTest(TestCase):
 
     def test_valid_stock_passed(self):
 
-        response = self.client.post('/stock/aapl')
+        response = self.client.get('/stock/?ticker=aapl')
         # print(response.status_code)
 
         self.assertEqual(response.status_code, 200)
@@ -143,7 +143,7 @@ class StockTest(TestCase):
     
     def test_invalid_stock_passed(self):
         
-        response = self.client.post('/stock/35634')
+        response = self.client.get('/stock/?ticker=35634')
         # print(response.status_code)
 
         favourites = Favourite.objects.filter(userID=response.context['user'])
@@ -214,7 +214,7 @@ class PredictTest(TestCase):
     
     def test_prediction(self):
 
-        self.client.post('/stock/aapl')
+        self.client.get('/stock/?ticker=aapl')
         response = self.client.post("/predict/aapl")
         # print(response.status_code)
 

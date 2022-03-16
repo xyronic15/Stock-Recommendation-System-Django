@@ -30,8 +30,13 @@ def home(request):
     return render(request, 'main/home.html', {"fname":fname, "lname": lname, "favourites": favourites, "msg": msg})
 
 @login_required(login_url='/accounts')
-def stock(request, ticker):
+def stock(request):
     print("Stock view called")
+
+    ticker = ""
+
+    if request.method == 'GET':
+        ticker = request.GET.get('ticker')
 
     stock = get_ticker(ticker)
     if stock.info['regularMarketPrice'] == None:
