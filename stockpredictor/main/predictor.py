@@ -230,6 +230,8 @@ class predictor:
         # Set the decision for MACD
         self.past['Decision_MACD'] = np.select(conditions, choices, default=STAY)
 
+        print("MACD calculated")
+
     def calc_rsi_sma(self):
 
         # Find sma200 and RSI
@@ -245,6 +247,26 @@ class predictor:
         # Set the decision for the RSI/SMA strategy
         self.past['Decision_RSI_SMA'] = np.select(conditions, choices, default=STAY)
 
+        print("RSI calculated")
+    
+    def calc_stoch(self):
+        
+        # calculate the %K and %D line
+        self.past['%K'] = ta.momentum.stoch(self.past.High, self.past.Low,self.past.Close, window=14, smooth_window=3)
+        self.past['%D'] = self.past['%K'].rolling(3).mean()
+        self.past['Stoch_diff'] = self.past['%K'] - self.past['%D']
+
+        # Set the conditions and choices
+        conditions = [
+            (self.past.Stoch_diff > 0) & (self.past.Stoch_diff.shift(1) <= 0),
+            (self.past.Stoch_diff < 0) & (self.past.Stoch_diff.shift(1) >= 0)]
+        choices = [BUY, SELL]
+
+        # Set the decision for Stoch
+        self.past['Decision_Stoch'] = np.select(conditions, choices, default=STAY)
+
+        print("Stochastic Index calculated")
+
     def calc_candle(self):
 
         # retrieve sma50, body high, body low, body, body avg
@@ -255,6 +277,8 @@ class predictor:
         self.past['Body_Avg'] = ta.trend.ema_indicator(self.past.Body, window=PREV_DEPTH_BODY_AVG)
 
         self.past['Decision_candle'] = self.search_candle_patterns(self.past)
+
+        print("Candlesticks calculated")
 
     # get the decision for buy and sell concerning candlesticks
     def search_candle_patterns(self, df):
@@ -343,6 +367,7 @@ class predictor:
         self.predict()
         self.calc_macd()
         self.calc_rsi_sma()
+        self.calc_stoch()
         self.calc_candle()
 
         MACD_list = []
@@ -350,18 +375,25 @@ class predictor:
         Candle_list = []
         predict_list = []
 
+        temp_dict = {}
+
         MACD_list.append("Based on the MACD strategy: " + self.decision_to_str(self.past['Decision_MACD'].iloc[-1]))
-        MACD_win, MACD_profit = self.backtest('Decision_MACD')
+        MACD_win, MACD_profit, _ = self.backtest('Decision_MACD')
         MACD_list.append("MACD average profits: " + str("{:.2f}".format(MACD_profit)) + "%")
         MACD_list.append("MACD win rate: " + str("{:.2f}".format(MACD_win)) + "%")
 
         RSI_list.append("Based on the RSI strategy: " + self.decision_to_str(self.past['Decision_RSI_SMA'].iloc[-1]))
-        RSI_win, RSI_profit = self.backtest('Decision_RSI_SMA')
+        RSI_win, RSI_profit, _ = self.backtest('Decision_RSI_SMA')
         RSI_list.append("RSI average profit: " + str("{:.2f}".format(RSI_profit)) + "%")
         RSI_list.append("RSI win rate: " + str("{:.2f}".format(RSI_win)) + "%")
 
+        # recommendation_list.append("Based on the Stochastic Momentum Index: " + self.decision_to_str(self.past['Decision_Stoch'].iloc[-1]))
+        # Stoch_win, Stoch_profit, _ = self.backtest('Decision_Stoch')
+        # recommendation_list.append("SMI average profit: " + str("{:.2f}".format(Stoch_profit)) + "%")
+        # recommendation_list.append("SMI win rate: " + str("{:.2f}".format(Stoch_win)) + "%")
+
         Candle_list.append("Based on the Candlestick Pattern strategy: " + self.decision_to_str(self.past['Decision_candle'].iloc[-1]))
-        Candle_win, Candle_profit = self.backtest('Decision_candle')
+        Candle_win, Candle_profit, _ = self.backtest('Decision_candle')
         Candle_list.append("Candlestick Pattern average profit: " + str("{:.2f}".format(Candle_profit)) + "%")
         Candle_list.append("Candlestick Pattern win rate: " + str("{:.2f}".format(Candle_win)) + "%")
 
@@ -416,6 +448,8 @@ class predictor:
             buy_prices = self.past.Open.iloc[buy_indices]
             sell_prices = self.past.Open.iloc[sell_indices]
 
+            appearance_count = len(sell_indices)
+
             profits = []
 
             for i in range(len(sell_prices)):
@@ -426,7 +460,7 @@ class predictor:
             percent_wins = (len(wins)/len(profits)) * 100
             avg_profit = (sum(profits)/len(profits)) * 100
 
-            return percent_wins, avg_profit
+            return percent_wins, avg_profit, appearance_count
         
         return
 
