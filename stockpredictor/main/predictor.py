@@ -380,35 +380,39 @@ class predictor:
 
         # temp_dict = {}
 
-        MACD_list['recommendation'] = "Based on the MACD strategy: " + self.decision_to_str(self.past['Decision_MACD'].iloc[-1])
+        MACD_list['name'] = "Moving Average Convergence Divergence (MACD)"
+        MACD_list['recommendation'] = self.decision_to_str(self.past['Decision_MACD'].iloc[-1])
         win, profit, count = self.backtest('Decision_MACD')
-        MACD_list['profit'] = "MACD average profits: " + str("{:.2f}".format(profit)) + "%"
-        MACD_list['win'] = "MACD win rate: " + str("{:.2f}".format(win)) + "%"
-        MACD_list['count'] = "MACD count: " + str(count) + " in 10 years"
+        MACD_list['profit'] = str("{:.2f}".format(profit))
+        MACD_list['win'] = str("{:.2f}".format(win))
+        MACD_list['count'] = str(count)
         recommendation_list.append(MACD_list)
         # print(recommendation_list)
 
-        RSI_list['recommendation'] = "Based on the Relative Strength Index: " + self.decision_to_str(self.past['Decision_RSI_SMA'].iloc[-1])
+        RSI_list['name'] = "Relative Strength Index (RSI)"
+        RSI_list['recommendation'] = self.decision_to_str(self.past['Decision_RSI_SMA'].iloc[-1])
         win, profit, count = self.backtest('Decision_RSI_SMA')
-        RSI_list['profit'] = "RSI average profit: " + str("{:.2f}".format(profit)) + "%"
-        RSI_list['win'] = "RSI win rate: " + str("{:.2f}".format(win)) + "%"
-        RSI_list['count'] = "RSI count: " + str(count) + " in 10 years"
+        RSI_list['profit'] = str("{:.2f}".format(profit))
+        RSI_list['win'] = str("{:.2f}".format(win))
+        RSI_list['count'] = str(count)
         recommendation_list.append(RSI_list)
         # print(recommendation_list)
 
-        SMI_list['recommendation'] = "Based on the Stochastic Momentum Index: " + self.decision_to_str(self.past['Decision_Stoch'].iloc[-1])
+        SMI_list['name'] = "Stochastic Movement Index"
+        SMI_list['recommendation'] = self.decision_to_str(self.past['Decision_Stoch'].iloc[-1])
         win, profit, count = self.backtest('Decision_Stoch')
-        SMI_list['profit'] = "SMI average profit: " + str("{:.2f}".format(profit)) + "%"
-        SMI_list['win'] = "SMI win rate: " + str("{:.2f}".format(win)) + "%"
-        SMI_list['count'] = "SMI count: " + str(count) + " in 10 years"
+        SMI_list['profit'] = str("{:.2f}".format(profit))
+        SMI_list['win'] = str("{:.2f}".format(win))
+        SMI_list['count'] = str(count)
         recommendation_list.append(SMI_list)
         # print(recommendation_list)
 
-        Candle_list['recommendation'] = "Based on the Candlestick Pattern strategy: " + self.decision_to_str(self.past['Decision_candle'].iloc[-1])
+        Candle_list['name'] = "Candlestick Patterns Strategy"
+        Candle_list['recommendation'] = self.decision_to_str(self.past['Decision_candle'].iloc[-1])
         win, profit, count = self.backtest('Decision_candle')
-        Candle_list['profit'] = "Candlestick Pattern average profit: " + str("{:.2f}".format(profit)) + "%"
-        Candle_list['win'] = "Candlestick Pattern win rate: " + str("{:.2f}".format(win)) + "%"
-        Candle_list['count'] = "Candlestick Pattern count: " + str(count) + " in 10 years"
+        Candle_list['profit'] = str("{:.2f}".format(profit))
+        Candle_list['win'] = str("{:.2f}".format(win))
+        Candle_list['count'] = str(count)
         recommendation_list.append(Candle_list)
         # print(recommendation_list)
 
