@@ -89,12 +89,12 @@ def predict(request, ticker):
 
     # Create a predictor object for the stock and retrieve the recommendations
     predict_stock = predictor(ticker)
-    recommendation_list = predict_stock.recommendation()
-    predict_div = predict_stock.get_div(predict_stock.predict_fig)
+    predict_list, recommendation_list = predict_stock.recommendation()
+    predict_fig = predict_stock.get_div(predict_stock.predict_fig)
 
     # predict_div = placeholder_plot()
 
-    return render(request, 'main/stock.html', {"scatter":scatter_div, "candlestick": candle_div, "stock": stock, "favourite": curr_fav, "prediction": predict_div, "recommendation_list": recommendation_list})
+    return render(request, 'main/stock.html', {"scatter":scatter_div, "candlestick": candle_div, "stock": stock, "favourite": curr_fav, "predict_fig": predict_fig, "predict_list": predict_list, "recommendation_list": recommendation_list})
 
 def add_favourite(request):
     if request.method == "POST":

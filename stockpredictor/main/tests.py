@@ -230,7 +230,8 @@ class PredictTest(TestCase):
         self.assertIsNotNone(response.context['candlestick'])
         self.assertIsNotNone(response.context['stock'])
         self.assertIsNotNone(response.context['favourite'])
-        self.assertIsNotNone(response.context['prediction'])
+        self.assertIsNotNone(response.context['predict_fig'])
+        self.assertIsNotNone(response.context['predict_list'])
         self.assertIsNotNone(response.context["recommendation_list"])
 
 class HomeTest(TestCase):

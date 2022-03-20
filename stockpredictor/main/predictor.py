@@ -412,11 +412,8 @@ class predictor:
         recommendation_list.append(Candle_list)
         # print(recommendation_list)
 
-        predict_list['recommendation'] = "Based on our prediction results: " + self.decision_to_str(self.prediction_decision())
-        predict_list['profit'] = ''
+        predict_list['recommendation'] = "Based on our LSTM prediction results: " + self.decision_to_str(self.prediction_decision())
         predict_list['win'] = "R\u00b2 goodness of fit for our prediction: " + str("{:.2f}".format(r_squared))
-        predict_list['count'] = ''
-        recommendation_list.append(predict_list)
         # print(recommendation_list)
 
         # recommendation_list = {
@@ -426,7 +423,7 @@ class predictor:
         #     'Predict': predict_list
         # }
 
-        return recommendation_list
+        return predict_list, recommendation_list
     
     # convert decision number to a string
     def decision_to_str(self, decision):

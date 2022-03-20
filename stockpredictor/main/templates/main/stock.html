@@ -58,7 +58,7 @@
                 {% endautoescape %}
             </div>
         </div>
-        {% if prediction == None %}
+        {% if predict_fig == None %}
         <div class="row small-card px-5 py-3 my-3">
             <div class="col-12 h-auto p-3">
                 <h2>Get Recommendations:</h2>
@@ -68,42 +68,32 @@
             </div>
         </div>
         {% endif %}
-        {% if prediction %}
+        {% if predict_fig %}
         <div class="row justify-content-center small-card py-3 my-3">
-            <div id="prediction">
-                {% autoescape off %}
-                {{prediction}}
-                {% endautoescape %}
+            <div class="col-12 justify-content-center">
+                <div id="predict_fig">
+                    {% autoescape off %}
+                    {{predict_fig}}
+                    {% endautoescape %}
+                </div>
+                <hr class="mx-3" style="border-top: 3px solid rgba(1,1,1,0.5);">
+                {% if predict_list %}
+                <div class="row justify-content-center">
+                    <div class="col-5 p-2 text-center">
+                        <p>{{predict_list.recommendation}}</p>
+                    </div>
+                    <div class="col-xs-2" style="margin-left:5px; margin-right:5px; width:1px; border-left:1px solid rgba(1,1,1,0.3);"></div>
+                    <div class="col-5 p-2 text-center">
+                        <p>{{predict_list.win}}</p>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% endif %}
         {% if recommendation_list %}
-        <div class="row justify-content-center small-card py-3 my-3">
+        <div class="row justify-content-center small-card py-3 m-3" id="recommendations">
             <h2>Recommendations based on various strategies</h2>
-            <!-- <div class="col-5 h-auto p-3">
-                <div class="row p-3">
-                    {% for item in recommendation_list.MACD %}
-                    <p>{{item}}</p>
-                    {% endfor %}
-                </div>
-                <div class="row p-3">
-                    {% for item in recommendation_list.Candle %}
-                    <p>{{item}}</p>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="col-5 h-auto p-3">
-                <div class="row p-3">
-                    {% for item in recommendation_list.RSI %}
-                    <p>{{item}}</p>
-                    {% endfor %}
-                </div>
-                <div class="row p-3">
-                    {% for item in recommendation_list.Predict %}
-                    <p>{{item}}</p>
-                    {% endfor %}
-                </div>
-            </div> -->
 
             <div class="row h-25 p-5">
                 <!-- Single card template -->
@@ -117,6 +107,16 @@
                 </div>
                 {% endfor %}
             </div>
+
+            <!-- <table class="table" id="stats">
+                <thead>
+                    <th scope="col">Strategy</th>
+                    <th scope="col">Recommended move</th>
+                    <th scope="col">Strategy Avg. Profit (%)</th>
+                    <th scope="col">Strategy Win Rate (%)</th>
+                    <th scope="col"># Appearances in 10yrs</th>
+                </thead>
+            </table> -->
         </div>
         {% endif %}
     </div>
