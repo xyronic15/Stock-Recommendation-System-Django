@@ -79,31 +79,44 @@
         {% endif %}
         {% if recommendation_list %}
         <div class="row justify-content-center small-card py-3 my-3">
-                <h2>Recommendations based on various strategies</h2>
-                <div class="col-5 h-auto p-3">
-                    <div class="row p-3">
-                        {% for item in recommendation_list.MACD %}
-                        <p>{{item}}</p>
-                        {% endfor %}
-                    </div>
-                    <div class="row p-3">
-                        {% for item in recommendation_list.Candle %}
-                        <p>{{item}}</p>
-                        {% endfor %}
-                    </div>
+            <h2>Recommendations based on various strategies</h2>
+            <!-- <div class="col-5 h-auto p-3">
+                <div class="row p-3">
+                    {% for item in recommendation_list.MACD %}
+                    <p>{{item}}</p>
+                    {% endfor %}
                 </div>
-                <div class="col-5 h-auto p-3">
-                    <div class="row p-3">
-                        {% for item in recommendation_list.RSI %}
-                        <p>{{item}}</p>
-                        {% endfor %}
-                    </div>
-                    <div class="row p-3">
-                        {% for item in recommendation_list.Predict %}
-                        <p>{{item}}</p>
-                        {% endfor %}
-                    </div>
+                <div class="row p-3">
+                    {% for item in recommendation_list.Candle %}
+                    <p>{{item}}</p>
+                    {% endfor %}
                 </div>
+            </div>
+            <div class="col-5 h-auto p-3">
+                <div class="row p-3">
+                    {% for item in recommendation_list.RSI %}
+                    <p>{{item}}</p>
+                    {% endfor %}
+                </div>
+                <div class="row p-3">
+                    {% for item in recommendation_list.Predict %}
+                    <p>{{item}}</p>
+                    {% endfor %}
+                </div>
+            </div> -->
+
+            <div class="row h-25 p-5">
+                <!-- Single card template -->
+                {% for item in recommendation_list %}
+                <div class="col-6 h-100">
+                    <p>{{item.recommendation}}</p>
+                    <p>{{item.profit}}</p>
+                    <p>{{item.win}}</p>
+                    <p>{{item.count}}</p>
+                    <hr style="border-top: 3px solid rgba(1,1,1,0.5);">
+                </div>
+                {% endfor %}
+            </div>
         </div>
         {% endif %}
     </div>
