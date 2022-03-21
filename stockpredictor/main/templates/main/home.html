@@ -29,13 +29,13 @@
         {% for fav in favourites %}
         <form method="get" action="/stock" class="col-4 h-100 py-3">
             <button type="submit" name="ticker" value="{{fav.ticker}}" class="small-card h-100 w-100">
-                <div class="row">
+                <div class="row align-items-center">
                     <div class="col-2 h-100">
                         <img src="{{fav.logo_url}}" alt="" class="stock-logo m-3">
                     </div>
-                    <div class="col-8 h-100">
+                    <div class="col-8 h-100 text-left mx-4">
                         <h2>{{fav.longName}}</h2>
-                        <p><strong>Ticker: {{fav.ticker}}</strong></p>
+                        <p class="m-0"><strong>Ticker: {{fav.ticker}}</strong></p>
                     </div>
                 </div>
             </button>
