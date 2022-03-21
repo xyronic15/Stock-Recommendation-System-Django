@@ -7,14 +7,18 @@
     <div class="row m-3">
         <h1>Home</h1>
     </div>
-    <br>
+    <hr class="w-100" style="border-top: 3px solid rgb(255, 255, 255);">
     <div class="row m-3">
         <h1>Welcome {{fname}} {{lname}}</h1>
     </div>
-    <div class="row m-3">
-        <form action="/stock" method="GET">   
-            <input name="ticker" type="text" placeholder="Stock Ticker (e.g. AAPL)" aria-label="Search">
-            <button type="submit">Search</button>
+    <div class="row justify-content-center">
+        <form action="/stock" method="GET" class="col-lg-12">
+            <div class="input-group shadow">
+                <input id="searchbar" name="ticker" type="text" placeholder="Search Stock Ticker (e.g. AAPL)" aria-label="Search" class="form-control form-control-lg col-lg-12 border-0 text-white">
+                <!-- <label for="search" class="form-label">Search Stock Ticker (e.g. AAPL)</label> -->
+                <div class="input-group-append"><button type="submit" class="btn btn-secondary">Search</button></div>
+            </div>
+            
         </form>
     </div>
     <div class="row m-3">
@@ -28,7 +32,7 @@
         <!-- Single card template -->
         {% for fav in favourites %}
         <form method="get" action="/stock" class="col-4 h-100 py-3">
-            <button type="submit" name="ticker" value="{{fav.ticker}}" class="small-card h-100 w-100">
+            <button type="submit" name="ticker" value="{{fav.ticker}}" class="small-card h-100 w-100 grow">
                 <div class="row align-items-center">
                     <div class="col-2 h-100">
                         <img src="{{fav.logo_url}}" alt="" class="stock-logo m-3">
