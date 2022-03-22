@@ -3,6 +3,7 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
+    path('', views.landing, name='landing'),
     path("home/", views.home, name="home"),
     path("stock/", views.stock, name="stock"),
     path("predict/<ticker>", views.predict, name="predict"),
