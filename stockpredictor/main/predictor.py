@@ -353,10 +353,24 @@ class predictor:
         decision_p = STAY
 
         # check if the lst item is the smallest or largest price
-        if self.predictions.index[-1] == self.predictions.idxmax():
-            decision_p = SELL
-        elif self.predictions.index[-1] == self.predictions.idxmin():
+        if self.predictions.max() > (1.02 * self.predictions[0]):
+            print(self.predictions.max())
+            print(1.02 * self.predictions[0])
             decision_p = BUY
+        elif self.predictions.min() < (0.98 * self.predictions[0]):
+            print(self.predictions.min())
+            print(self.predictions[0])
+            decision_p = SELL
+
+        # if self.predictions.idxmax() > (1.02 * self.predictions[0]):
+        #     decision_p = BUY
+        # elif self.predictions.idxmin() < (0.98 * self.predictions[0]):
+        #     decision_p = SELL
+
+        # if self.predictions.index[-1] == self.predictions.idxmax():
+        #     decision_p = BUY
+        # elif self.predictions.index[-1] == self.predictions.idxmin():
+        #     decision_p = SELL
 
         return decision_p
     
