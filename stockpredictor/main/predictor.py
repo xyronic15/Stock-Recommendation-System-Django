@@ -230,6 +230,8 @@ class predictor:
         # Set the decision for MACD
         self.past['Decision_MACD'] = np.select(conditions, choices, default=STAY)
 
+        print("MACD calculated")
+
     def calc_rsi_sma(self):
 
         # Find sma200 and RSI
@@ -245,6 +247,26 @@ class predictor:
         # Set the decision for the RSI/SMA strategy
         self.past['Decision_RSI_SMA'] = np.select(conditions, choices, default=STAY)
 
+        print("RSI calculated")
+    
+    def calc_stoch(self):
+        
+        # calculate the %K and %D line
+        self.past['%K'] = ta.momentum.stoch(self.past.High, self.past.Low,self.past.Close, window=14, smooth_window=3)
+        self.past['%D'] = self.past['%K'].rolling(3).mean()
+        self.past['Stoch_diff'] = self.past['%K'] - self.past['%D']
+
+        # Set the conditions and choices
+        conditions = [
+            (self.past.Stoch_diff > 0) & (self.past.Stoch_diff.shift(1) <= 0),
+            (self.past.Stoch_diff < 0) & (self.past.Stoch_diff.shift(1) >= 0)]
+        choices = [BUY, SELL]
+
+        # Set the decision for Stoch
+        self.past['Decision_Stoch'] = np.select(conditions, choices, default=STAY)
+
+        print("Stochastic Index calculated")
+
     def calc_candle(self):
 
         # retrieve sma50, body high, body low, body, body avg
@@ -255,6 +277,8 @@ class predictor:
         self.past['Body_Avg'] = ta.trend.ema_indicator(self.past.Body, window=PREV_DEPTH_BODY_AVG)
 
         self.past['Decision_candle'] = self.search_candle_patterns(self.past)
+
+        print("Candlesticks calculated")
 
     # get the decision for buy and sell concerning candlesticks
     def search_candle_patterns(self, df):
@@ -343,39 +367,67 @@ class predictor:
         self.predict()
         self.calc_macd()
         self.calc_rsi_sma()
+        self.calc_stoch()
         self.calc_candle()
 
-        MACD_list = []
-        RSI_list = []
-        Candle_list = []
-        predict_list = []
+        MACD_list = {}
+        RSI_list = {}
+        SMI_list = {}
+        Candle_list = {}
+        predict_list = {}
 
-        MACD_list.append("Based on the MACD strategy: " + self.decision_to_str(self.past['Decision_MACD'].iloc[-1]))
-        MACD_win, MACD_profit = self.backtest('Decision_MACD')
-        MACD_list.append("MACD average profits: " + str("{:.2f}".format(MACD_profit)) + "%")
-        MACD_list.append("MACD win rate: " + str("{:.2f}".format(MACD_win)) + "%")
+        recommendation_list = []
 
-        RSI_list.append("Based on the RSI strategy: " + self.decision_to_str(self.past['Decision_RSI_SMA'].iloc[-1]))
-        RSI_win, RSI_profit = self.backtest('Decision_RSI_SMA')
-        RSI_list.append("RSI average profit: " + str("{:.2f}".format(RSI_profit)) + "%")
-        RSI_list.append("RSI win rate: " + str("{:.2f}".format(RSI_win)) + "%")
+        # temp_dict = {}
 
-        Candle_list.append("Based on the Candlestick Pattern strategy: " + self.decision_to_str(self.past['Decision_candle'].iloc[-1]))
-        Candle_win, Candle_profit = self.backtest('Decision_candle')
-        Candle_list.append("Candlestick Pattern average profit: " + str("{:.2f}".format(Candle_profit)) + "%")
-        Candle_list.append("Candlestick Pattern win rate: " + str("{:.2f}".format(Candle_win)) + "%")
+        MACD_list['name'] = "Moving Average Convergence Divergence (MACD)"
+        MACD_list['recommendation'] = self.decision_to_str(self.past['Decision_MACD'].iloc[-1])
+        win, profit, count = self.backtest('Decision_MACD')
+        MACD_list['profit'] = str("{:.2f}".format(profit))
+        MACD_list['win'] = str("{:.2f}".format(win))
+        MACD_list['count'] = str(count)
+        recommendation_list.append(MACD_list)
+        # print(recommendation_list)
 
-        predict_list.append("Based on our prediction results: " + self.decision_to_str(self.prediction_decision()))
-        predict_list.append("R\u00b2 goodness of fit for our prediction: " + str("{:.2f}".format(r_squared)))
+        RSI_list['name'] = "Relative Strength Index (RSI)"
+        RSI_list['recommendation'] = self.decision_to_str(self.past['Decision_RSI_SMA'].iloc[-1])
+        win, profit, count = self.backtest('Decision_RSI_SMA')
+        RSI_list['profit'] = str("{:.2f}".format(profit))
+        RSI_list['win'] = str("{:.2f}".format(win))
+        RSI_list['count'] = str(count)
+        recommendation_list.append(RSI_list)
+        # print(recommendation_list)
 
-        recommendation_list = {
-            'MACD': MACD_list,
-            'RSI': RSI_list,
-            'Candle': Candle_list,
-            'Predict': predict_list
-        }
+        SMI_list['name'] = "Stochastic Movement Index"
+        SMI_list['recommendation'] = self.decision_to_str(self.past['Decision_Stoch'].iloc[-1])
+        win, profit, count = self.backtest('Decision_Stoch')
+        SMI_list['profit'] = str("{:.2f}".format(profit))
+        SMI_list['win'] = str("{:.2f}".format(win))
+        SMI_list['count'] = str(count)
+        recommendation_list.append(SMI_list)
+        # print(recommendation_list)
 
-        return recommendation_list
+        Candle_list['name'] = "Candlestick Patterns Strategy"
+        Candle_list['recommendation'] = self.decision_to_str(self.past['Decision_candle'].iloc[-1])
+        win, profit, count = self.backtest('Decision_candle')
+        Candle_list['profit'] = str("{:.2f}".format(profit))
+        Candle_list['win'] = str("{:.2f}".format(win))
+        Candle_list['count'] = str(count)
+        recommendation_list.append(Candle_list)
+        # print(recommendation_list)
+
+        predict_list['recommendation'] = "Based on our LSTM prediction results: " + self.decision_to_str(self.prediction_decision())
+        predict_list['win'] = "R\u00b2 goodness of fit for our prediction: " + str("{:.2f}".format(r_squared))
+        # print(recommendation_list)
+
+        # recommendation_list = {
+        #     'MACD': MACD_list,
+        #     'RSI': RSI_list,
+        #     'Candle': Candle_list,
+        #     'Predict': predict_list
+        # }
+
+        return predict_list, recommendation_list
     
     # convert decision number to a string
     def decision_to_str(self, decision):
@@ -416,6 +468,8 @@ class predictor:
             buy_prices = self.past.Open.iloc[buy_indices]
             sell_prices = self.past.Open.iloc[sell_indices]
 
+            appearance_count = len(sell_indices)
+
             profits = []
 
             for i in range(len(sell_prices)):
@@ -426,7 +480,7 @@ class predictor:
             percent_wins = (len(wins)/len(profits)) * 100
             avg_profit = (sum(profits)/len(profits)) * 100
 
-            return percent_wins, avg_profit
+            return percent_wins, avg_profit, appearance_count
         
         return
 
@@ -466,12 +520,14 @@ def main():
 
 
     predict_aapl = predictor('aapl')
-    predict_aapl.test_lstm()
-    predict_aapl.predict()
+    # predict_aapl.test_lstm()
+    # predict_aapl.predict()
     # predict_aapl.test_fig.show()
-    predict_aapl.predict_fig.show()
-    print(predict_aapl.predictions.index[-1] == predict_aapl.predictions.idxmax())
-    print(predict_aapl.predictions.index[-1] == predict_aapl.predictions.idxmin())
+    # predict_aapl.predict_fig.show()
+    # print(predict_aapl.predictions.index[-1] == predict_aapl.predictions.idxmax())
+    # print(predict_aapl.predictions.index[-1] == predict_aapl.predictions.idxmin())
+    recommendation_list = predict_aapl.recommendation()
+    # print(recommendation_list)
 
 
     # predict_aapl.calc_macd()

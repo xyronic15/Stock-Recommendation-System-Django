@@ -1,5 +1,6 @@
 body {
   background: #3f3f3f !important;
+  font-family: Ubuntu !important;
 }
 
 h1 {
@@ -9,6 +10,7 @@ h1 {
 .sidenav {
   position: fixed;
   height: 100%;
+  width: 220px;
   left: 0px;
   top: 0px;
   background: #606060;
@@ -21,7 +23,7 @@ h1 {
 }
 
 .sidenav a {
-  padding: 6px 8px 6px 16px;
+  padding: 6px 8px 6px 8px;
   width: 180px;
   height: 40px;
   background: #606060;
@@ -48,6 +50,14 @@ h1 {
   text-decoration: none;
 }
 
+#searchbar{
+  background: #606060;
+}
+
+#searchbar::placeholder{
+  color: rgba(255,255,255,0.5)
+}
+
 .main {
   margin-left: 225px;
   padding: 30px 10px;
@@ -71,4 +81,12 @@ h1 {
 .stock-logo {
   max-width: 50px;
   max-height: 50px;
+}
+
+.grow { 
+  transition: all .2s ease-in-out; 
+}
+
+.grow:hover { 
+  transform: scale(1.1); 
 }
