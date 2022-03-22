@@ -21,11 +21,11 @@
             
         </form>
     </div>
-    <div class="row m-3">
-        {% if msg %}
-        <p>{{msg}}</p>
-        {% endif %}
+    {% if msg %}
+    <div class="alert alert-light" role="alert">
+        {{msg}}
     </div>
+    {% endif %}
 
     <div class="row h-25">
         

@@ -5,22 +5,24 @@
 {% block content %}
 <div class="row justify-content-center h-100">
     <div class="col-8 h-auto">
-        <div class="row small-card my-3">
+        <div class="row small-card my-3 align-items-center">
             <div class="col-2 h-auto p-3">
                 <img src="{{stock.info.logo_url}}" alt="" class="stock-logo m-3">
             </div>
-            <div class="col-4 h-auto p-3">
-                <h2>{{stock.info.longName}}</h2>
-                <p><strong>Current Price: </strong>${{stock.info.currentPrice}}</p>
-                <p><strong>Open Price: </strong>${{stock.info.open}}</p>
-            </div>
-            <div class="col-4 h-auto p-3">
-                <h2><br></h2>
-                <p><strong>Current Day High Price: </strong>${{stock.info.dayHigh}}</p>
-                <p><strong>Current Day Low Price: </strong>${{stock.info.dayLow}}</p>
+            <div class="col-8">
+                <div class=" m-3"><h2>{{stock.info.longName}}</h2></div>
+                <div class="row">
+                    <div class="col-6 h-auto p-3">
+                        <p><strong>Current Price: </strong>${{stock.info.currentPrice}}</p>
+                        <p><strong>Open Price: </strong>${{stock.info.open}}</p>
+                    </div>
+                    <div class="col-6 h-auto p-3">
+                        <p><strong>Current Day High Price: </strong>${{stock.info.dayHigh}}</p>
+                        <p><strong>Current Day Low Price: </strong>${{stock.info.dayLow}}</p>
+                    </div>
+                </div>
             </div>
             <div class="col-2 justify-content-center h-auto p-3">
-                <h2><br></h2>
                 {% if favourite %}
                 <form method="POST" id="fav-form" style="display: none">
                     {% csrf_token %}
