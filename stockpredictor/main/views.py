@@ -155,3 +155,7 @@ def account(request):
         'register': SignUpForm()
     }
     return render(request, 'main/account.html', data)
+
+
+def landing(request):
+    return render(request, 'main/landing.html')
