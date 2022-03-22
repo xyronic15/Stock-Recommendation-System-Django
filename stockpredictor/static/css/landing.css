@@ -1,0 +1,57 @@
+.video-background {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.overlay {
+    position: absolute;
+    top: 38%;
+    width: 100%;
+    color: white;
+}
+
+.overlay h1 {
+    font-size: 4rem;
+    font-weight: 500;
+    letter-spacing: .2rem;
+    padding-bottom: .5rem;
+}
+
+.overlay h3 {
+    font-size: 2rem;
+    font-weight: 100;
+    padding-bottom: 3rem;
+}
+
+.overlay a {
+    border-width: medium;
+    border-radius: 5;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 1rem 1.3rem;
+}
+
+.first-panel {
+    padding: 2rem 5rem 2rem 5rem;
+}
+
+.second-panel {
+    padding: 2rem 5rem 2rem 5rem;
+    background-color: #00a3ff;
+    color: white;
+}
+
+.row {
+    padding-top: 1rem;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+}
+
+hr {
+    background-color: #616161;
+}
