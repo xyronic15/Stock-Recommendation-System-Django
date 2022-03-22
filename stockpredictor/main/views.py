@@ -46,7 +46,7 @@ def stock(request):
         # retrieve all the favourites associated with the user
         favourites = Favourite.objects.filter(userID=request.user)
         
-        msg = "No such ticker as " + ticker
+        msg = "No such ticker as '" + ticker + "'"
         return render(request, 'main/home.html', {"fname": fname, "lname": lname, "favourites": favourites, "msg": msg}, status=301)
 
     # check if favourite exists for this user
