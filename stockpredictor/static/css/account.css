@@ -4,6 +4,34 @@ body {
   width: 100%;
 }
 
+body {
+    color: white !important;
+    background-color: #121212 !important;
+}
+
+.card {
+    background-color: #262626 !important;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #1c1c1c !important;
+}
+
+.nav-tabs .nav-link.active {
+    color: #1864ee !important;
+    background-color: #1c1c1c !important;
+    border-bottom: #1c1c1c;
+    border: 0;
+}
+
+.active div {
+    background-color: #1c1c1c !important;
+}
+
+.nav-tabs .nav-link {
+    color: white !important;
+}
+
 .main {
   align-items: center;
   display: flex;
