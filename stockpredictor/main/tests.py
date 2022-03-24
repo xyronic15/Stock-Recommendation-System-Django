@@ -150,7 +150,7 @@ class StockTest(TestCase):
 
         self.assertEqual(response.status_code, 301)
         self.assertTemplateUsed(response, 'main/home.html')
-        self.assertEqual(response.context['msg'], "No such ticker as 35634")
+        self.assertEqual(response.context['msg'], "No such ticker as '35634'")
         self.assertEqual(response.context['fname'], self.user['first_name'])
         self.assertEqual(response.context['lname'], self.user['last_name'])
         self.assertEqual(list(response.context['favourites']), list(favourites))
