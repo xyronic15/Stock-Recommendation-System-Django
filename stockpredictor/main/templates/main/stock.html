@@ -61,12 +61,20 @@
             </div>
         </div>
         {% if predict_fig == None %}
-        <div class="row small-card px-5 py-3 my-3">
+        <div id="getPredict" class="row small-card px-5 py-3 my-3">
             <div class="col-12 h-auto p-3">
                 <h2>Get Recommendations:</h2>
                 <form method="get" action="/predict/{{stock.info.symbol}}">
-                    <button type="submit" class="btn btn-dark" name="" value="">Predict</button>
+                    <button type="submit" class="btn btn-dark" name="" value="" onclick="predictLoading()">Predict</button>
                 </form>
+            </div>
+        </div>
+        <div id="predictLoader" class="row small-card px-5 py-3 my-3 justify-content-center" style="display: none">
+            <div class="row h-auto w-100 p-3 justify-content-center">
+                <span class="spinner-border spinner-border-lg" role="status" style="width: 5rem; height: 5rem;"></span>
+            </div>
+            <div class="row h-auto w-100 p-3 justify-content-center">
+                <span><h2>Please wait a moment...</h2></span>
             </div>
         </div>
         {% endif %}
@@ -174,6 +182,14 @@
         scatter_btn.classList.add("btn-light")
         scatter.style.display = "none"
         candle.style.display = "block"
+    }
+
+    const predictLoader = document.getElementById("predictLoader")
+    const getPredict = document.getElementById("getPredict")
+
+    function predictLoading(){
+        predictLoader.style.display = "block"
+        getPredict.style.display = "none"
     }
 </script>
 <script>

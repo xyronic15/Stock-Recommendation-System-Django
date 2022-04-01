@@ -350,13 +350,27 @@ class predictor:
     # return decision based on the prediction
     def prediction_decision(self):
         
-        decision_p = STAY
+        decision_p = "STAY"
 
         # check if the lst item is the smallest or largest price
-        if self.predictions.index[-1] == self.predictions.idxmax():
-            decision_p = SELL
-        elif self.predictions.index[-1] == self.predictions.idxmin():
-            decision_p = BUY
+        if self.predictions.max() > (1.02 * self.stock.info['currentPrice']):
+            print(self.predictions.max())
+            print(1.02 * self.predictions[0])
+            decision_p = "BUY and SELL after " + str(self.predictions.idxmax() + 1) + " days"
+        elif self.predictions.min() < (0.98 * self.stock.info['currentPrice']):
+            print(self.predictions.min())
+            print(self.predictions[0])
+            decision_p = "SELL and BUY after " + str(self.predictions.idxmin() + 1) + " days"
+
+        # if self.predictions.idxmax() > (1.02 * self.predictions[0]):
+        #     decision_p = BUY
+        # elif self.predictions.idxmin() < (0.98 * self.predictions[0]):
+        #     decision_p = SELL
+
+        # if self.predictions.index[-1] == self.predictions.idxmax():
+        #     decision_p = BUY
+        # elif self.predictions.index[-1] == self.predictions.idxmin():
+        #     decision_p = SELL
 
         return decision_p
     
@@ -416,7 +430,7 @@ class predictor:
         recommendation_list.append(Candle_list)
         # print(recommendation_list)
 
-        predict_list['recommendation'] = "Based on our LSTM prediction results: " + self.decision_to_str(self.prediction_decision())
+        predict_list['recommendation'] = "Based on our LSTM prediction results: " + self.prediction_decision()
         predict_list['win'] = "R\u00b2 goodness of fit for our prediction: " + str("{:.2f}".format(r_squared))
         # print(recommendation_list)
 
