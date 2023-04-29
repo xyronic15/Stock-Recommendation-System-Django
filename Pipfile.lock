@@ -800,7 +800,7 @@
                 "sha256:a42190dd3b3fce1b00aec273db36392b8f100cc8c73dc7881bb558117cbf7c69"
             ],
             "index": "pypi",
-            "version": "==0.1.70"
+            "version": "==0.2.18"
         },
         "zipp": {
             "hashes": [

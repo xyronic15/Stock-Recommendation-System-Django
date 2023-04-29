@@ -37,9 +37,11 @@ def stock(request):
 
     if request.method == 'GET':
         ticker = request.GET.get('ticker')
+        print(ticker)
 
     stock = get_ticker(ticker)
-    if stock.info['regularMarketPrice'] == None:
+    print(stock)
+    if stock.info['regularMarketDayHigh'] == None and stock.info['regularMarketDayLow'] == None:
         # get user's name
         fname, lname = request.user.first_name, request.user.last_name
 
@@ -70,10 +72,14 @@ def stock(request):
     candle_div = get_candlestick(df)
     prediction = None
 
-    request.session["stock"] = stock
+    print(type(scatter_div), type(candle_div))
+
+    # request.session["stock"] = stock
     request.session["curr_fav"] = curr_fav
     request.session["scatter_div"] = scatter_div
     request.session["candle_div"] = candle_div
+
+    # print(request.session["stock"])
 
     return render(request, 'main/stock.html',
                   {"scatter": scatter_div, "candlestick": candle_div, "stock": stock, "favourite": curr_fav, "prediction": prediction})
@@ -82,7 +88,7 @@ def stock(request):
 def predict(request, ticker):
     
     print("Predict view called")
-    stock = request.session["stock"]
+    stock = get_ticker(ticker)
     curr_fav = request.session["curr_fav"]
     scatter_div = request.session["scatter_div"]
     candle_div = request.session["candle_div"]
@@ -140,10 +146,13 @@ def account(request):
         if request.POST.get('submit') == 'signin':
             user = authenticate(username=request.POST['username'],
                                 password=request.POST['password'])
+            print(user)
             if user is not None:
                 login(request, user)
         elif request.POST.get('submit') == 'signup':
             form = SignUpForm(request.POST)
+            for field in form:
+                print("Field Error:", field.name,  field.errors)
             if form.is_valid():
                 form.save()
 
